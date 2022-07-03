@@ -6,7 +6,7 @@ import {
 } from "@certusone/wormhole-sdk";
 import EthereumSignerKey from "./EthereumSignerKey";
 import SolanaWalletKey from "./SolanaWalletKey";
-import TerraWalletKey from "./TerraWalletKey";
+import HumanWalletKey from "./HumanWalletKey";
 
 function KeyAndBalance({ chainId }: { chainId: ChainId }) {
   if (isEVMChain(chainId)) {
@@ -26,7 +26,7 @@ function KeyAndBalance({ chainId }: { chainId: ChainId }) {
   if (chainId === CHAIN_ID_TERRA) {
     return (
       <>
-        <TerraWalletKey />
+        <HumanWalletKey />
       </>
     );
   }

@@ -1,33 +1,22 @@
-import { useConnectedWallet, useWallet } from "@terra-money/wallet-provider";
 import { useCallback, useState } from "react";
-import TerraConnectWalletDialog from "./TerraConnectWalletDialog";
 import ToggleConnectedButton from "./ToggleConnectedButton";
+import useHumanchainConnection from "../hooks/useHumanchainConnection";
 
-const TerraWalletKey = () => {
-  const wallet = useWallet();
-  const connectedWallet = useConnectedWallet();
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
-  const connect = useCallback(() => {
-    setIsDialogOpen(true);
-  }, [setIsDialogOpen]);
-
-  const closeDialog = useCallback(() => {
-    setIsDialogOpen(false);
-  }, [setIsDialogOpen]);
+const HumanWalletKey = () => {
+  // const wallet = useWallet();
+  // const connectedWallet = useConnectedWallet();
+  const { walletAddress, handleKeplrConnect, handleKeplrDisConnect} = useHumanchainConnection();
 
   return (
     <>
       <ToggleConnectedButton
-        connect={connect}
-        disconnect={wallet.disconnect}
-        connected={!!connectedWallet}
-        pk={connectedWallet?.terraAddress || ""}
+        connect={handleKeplrConnect}
+        disconnect={handleKeplrDisConnect}
+        connected={!!walletAddress}
+        pk={walletAddress || ""}
       />
-      <TerraConnectWalletDialog isOpen={isDialogOpen} onClose={closeDialog} />
     </>
   );
 };
 
-export default TerraWalletKey;
+export default HumanWalletKey;

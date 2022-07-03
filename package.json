@@ -66,6 +66,7 @@
     ]
   },
   "devDependencies": {
+    "@keplr-wallet/types": "^0.10.9",
     "@truffle/hdwallet-provider": "^1.4.1",
     "@types/node": "^16.6.1",
     "@types/numeral": "^2.0.2",
