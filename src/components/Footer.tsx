@@ -170,7 +170,7 @@ export default function Footer() {
               Our social links
             </Typography>
             <IconButton
-              href="https://diversi.fi/"
+              href="https://google.com"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -178,7 +178,7 @@ export default function Footer() {
               <img src={Discord} alt="Discord" />
             </IconButton>
             <IconButton
-              href="https://github.com/Diversifi-Technologies"
+              href="https://google.com"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -186,7 +186,7 @@ export default function Footer() {
               <img src={Github} alt="Github" />
             </IconButton>
             <IconButton
-              href="https://medium.com/@diversi_fi"
+              href="https://google.com"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -194,7 +194,7 @@ export default function Footer() {
               <img src={Medium} alt="Medium" />
             </IconButton>
             <IconButton
-              href="https://t.me/+O0NIL6a9Ask5OWUy"
+              href="https://google.com"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -202,7 +202,7 @@ export default function Footer() {
               <img src={Telegram} alt="Telegram" />
             </IconButton>
             <IconButton
-              href="https://twitter.com/diversi_fi"
+              href="https://twitter.com/"
               target="_blank"
               rel="noopener noreferrer"
               className={classes.socialIcon}
@@ -212,7 +212,7 @@ export default function Footer() {
           </div>
           <div className={classes.copyWrapper}>
             <Typography variant="body2">
-              2022 &copy; Kima. All Rights Reserved.
+              2022 &copy; Human. All Rights Reserved.
             </Typography>
           </div>
         </div>

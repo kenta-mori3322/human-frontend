@@ -72,7 +72,7 @@ function Send() {
     }
     
     enqueueSnackbar(null, {
-      content: <Alert severity="success">Transaction request was approved by Kima</Alert>,
+      content: <Alert severity="success">Transaction request was approved by Human</Alert>,
     });
     //------------------------------
 

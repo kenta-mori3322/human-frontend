@@ -322,7 +322,7 @@ export function useHandleTransfer() {
   const processApprove = async () => {
     const bytes: Uint8Array = new Uint8Array();
     enqueueSnackbar(null, {
-      content: <Alert severity="success">Kimachain is working to complete transfer. Please wait for a few seconds...</Alert>,
+      content: <Alert severity="success">Humanchain is working to complete transfer. Please wait for a few seconds...</Alert>,
     });
 
     dispatch(setIsSending(false));

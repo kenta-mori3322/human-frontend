@@ -209,13 +209,13 @@ function App() {
           <div className={classes.spacer} />
         </Toolbar>
       </AppBar>
-      {CLUSTER === "mainnet" ? null : (
+      {/* {CLUSTER === "mainnet" ? null : (
         <AppBar position="static" className={classes.betaBanner} elevation={0}>
           <Typography style={{ textAlign: "center" }}>
-            Caution! This platform is running on {CLUSTER} environment.
+            { Caution! This platform is running on {CLUSTER} environment. }
           </Typography>
         </AppBar>
-      )}
+      )} */}
       {isBeta ? (
         <AppBar position="static" className={classes.betaBanner} elevation={0}>
           <Typography style={{ textAlign: "center" }}>
