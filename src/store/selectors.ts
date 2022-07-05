@@ -185,6 +185,8 @@ export const selectTransferSourceParsedTokenAccounts = (state: RootState) =>
 export const selectTransferSourceBalanceString = (state: RootState) =>
   state.transfer.sourceParsedTokenAccount?.uiAmountString || "";
 export const selectTransferAmount = (state: RootState) => state.transfer.amount;
+export const selectHumanAddress = (state: RootState) => state.transfer.humanAddress;
+export const selectHumanClient = (state: RootState) => state.transfer.humanClient;
 export const selectTransferTargetChain = (state: RootState) =>
   state.transfer.targetChain;
 export const selectTransferTargetAddressHex = (state: RootState) =>

@@ -5,9 +5,10 @@ import {
   isEVMChain,
 } from "@certusone/wormhole-sdk";
 import { hexlify, hexStripZeros } from "@ethersproject/bytes";
-import { useConnectedWallet } from "@terra-money/wallet-provider";
+// import  useHumanchainConnection from "./useHumanchainConnection";
 import { useCallback, useMemo } from "react";
 import { useEthereumProvider } from "../contexts/EthereumProviderContext";
+import { useHumanProvider } from "../contexts/HumanProviderContext"
 import { useSolanaWallet } from "../contexts/SolanaWalletContext";
 import { CLUSTER, getEvmChainId } from "../utils/consts";
 
@@ -35,13 +36,19 @@ function useIsWalletReady(
   const autoSwitch = enableNetworkAutoswitch;
   const solanaWallet = useSolanaWallet();
   const solPK = solanaWallet?.publicKey;
-  const terraWallet = useConnectedWallet();
-  const hasTerraWallet = !!terraWallet;
+  
+  const {
+    humanAddress,
+    humanSignerClient
+  } = useHumanProvider();
+  const hasTerraWallet = !!humanSignerClient;
+
   const {
     provider,
     signerAddress,
     chainId: evmChainId,
   } = useEthereumProvider();
+
   const hasEthInfo = !!provider && !!signerAddress;
   const correctEvmNetwork = getEvmChainId(chainId);
   const hasCorrectEvmNetwork = evmChainId === correctEvmNetwork;
@@ -66,14 +73,14 @@ function useIsWalletReady(
     if (
       chainId === CHAIN_ID_TERRA &&
       hasTerraWallet &&
-      terraWallet?.walletAddress
+      humanAddress
     ) {
       // TODO: terraWallet does not update on wallet changes
       return createWalletStatus(
         true,
         undefined,
         forceNetworkSwitch,
-        terraWallet.walletAddress
+        humanAddress
       );
     }
     if (chainId === CHAIN_ID_SOLANA && solPK) {
@@ -122,7 +129,7 @@ function useIsWalletReady(
     hasCorrectEvmNetwork,
     provider,
     signerAddress,
-    terraWallet,
+    humanAddress
   ]);
 }
 

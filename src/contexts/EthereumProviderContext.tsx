@@ -60,8 +60,6 @@ export const EthereumProviderProvider = ({
               provider
                 .getNetwork()
                 .then((network) => {
-                  console.log('network.chainId')
-                  console.log(network.chainId)
                   setChainId(network.chainId);
                 })
                 .catch(() => {

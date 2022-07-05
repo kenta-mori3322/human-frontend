@@ -1,19 +1,17 @@
-import { useCallback, useState } from "react";
 import ToggleConnectedButton from "./ToggleConnectedButton";
-import useHumanchainConnection from "../hooks/useHumanchainConnection";
+import { useHumanProvider } from "../contexts/HumanProviderContext";
 
 const HumanWalletKey = () => {
-  // const wallet = useWallet();
-  // const connectedWallet = useConnectedWallet();
-  const { walletAddress, handleKeplrConnect, handleKeplrDisConnect} = useHumanchainConnection();
+  const { connect, disconnect, humanAddress } =
+  useHumanProvider();
 
   return (
     <>
       <ToggleConnectedButton
-        connect={handleKeplrConnect}
-        disconnect={handleKeplrDisConnect}
-        connected={!!walletAddress}
-        pk={walletAddress || ""}
+        connect={connect}
+        disconnect={disconnect}
+        connected={!!humanAddress}
+        pk={humanAddress || ""}
       />
     </>
   );

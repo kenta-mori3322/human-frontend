@@ -70,6 +70,7 @@ function Source() {
   const dispatch = useDispatch();
   const sourceChain = useSelector(selectTransferSourceChain);
   const targetChain = useSelector(selectTransferTargetChain);
+
   const targetChainOptions = useMemo(
     () => CHAINS.filter((c) => c.id !== sourceChain),
     [sourceChain]

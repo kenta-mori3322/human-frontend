@@ -2,6 +2,7 @@ import {
   ChainId,
   CHAIN_ID_ETH,
   CHAIN_ID_SOLANA,
+  CHAIN_ID_TERRA,
 } from "@certusone/wormhole-sdk";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { StateSafeWormholeWrappedInfo } from "../hooks/useCheckIfWormholeWrapped";
@@ -63,11 +64,15 @@ export interface TransferState {
   relayerFee: string | undefined;
   acalaRelayerInfo: DataWrapper<AcalaRelayerInfo>;
   diversifiWalletAddress: string | undefined;
+  humanAddress: string;
+  humanClient: any;
 }
 
 const initialState: TransferState = {
+  humanAddress: "",
+  humanClient: null,
   activeStep: 0,
-  sourceChain: CHAIN_ID_SOLANA,
+  sourceChain: CHAIN_ID_TERRA,
   isSourceAssetWormholeWrapped: false,
   sourceWalletAddress: undefined,
   sourceParsedTokenAccount: undefined,
@@ -231,6 +236,12 @@ export const transferSlice = createSlice({
     setIsApproving: (state, action: PayloadAction<boolean>) => {
       state.isApproving = action.payload;
     },
+    setHumanAddress: (state, action: PayloadAction<string>) => {
+      state.humanAddress = action.payload;
+    },
+    setHumanClient: (state, action: PayloadAction<any>) => {
+      state.humanClient = action.payload;
+    },
     reset: (state) => ({
       ...initialState,
       sourceChain: state.sourceChain,
@@ -333,6 +344,8 @@ export const {
   setIsRedeeming,
   setRedeemTx,
   setIsApproving,
+  setHumanAddress,
+  setHumanClient,
   reset,
   setRecoveryVaa,
   setGasPrice,
