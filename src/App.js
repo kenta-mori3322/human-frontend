@@ -20,7 +20,6 @@ import Footer from "./components/Footer";
 import Stats from "./components/Stats";
 import Validators from "./components/Validators";
 import Transfer from "./components/Transfer";
-import Wallet from "./components/Wallet";
 import { useBetaContext } from "./contexts/BetaContext";
 import Portal from "./images/logo.png"
 import Header from "./images/Header.png";

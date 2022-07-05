@@ -41,6 +41,7 @@ function SendConfirmationContent({
   const sendAmount = useSelector(selectTransferAmount);
   const denoms = ["", "", "USDK", "HMN"];
 
+  console.log("sendAmount", sendAmount)
   //TODO this check is essentially duplicated.
   const deservesTimeout = useMemo(() => {
     if (originChain && sourceParsedTokenAccount?.mintKey) {

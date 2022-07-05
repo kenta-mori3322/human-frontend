@@ -127,7 +127,7 @@ export const HumanchainProvider = ({
 
       // Set state value as first address.
       setWalletAddress(keplrAccounts[0].address);
-      setWalletClient(keplrAccounts[0])
+      setWalletClient(offlineSigner)
 
     } else {
       alert("Keplr extension is not installed.");

@@ -5,27 +5,20 @@ import {
   getEmitterAddressTerra,
   isEVMChain,
   parseSequenceFromLogTerra,
-  transferFromTerra,
-  uint8ArrayToHex,
 } from "@certusone/wormhole-sdk";
+import { SigningCosmosClient } from "@cosmjs/launchpad";
 import { Alert } from "@material-ui/lab";
 import {
   useConnection,
   useWallet,
-  WalletContextState,
 } from "@solana/wallet-adapter-react";
 import {
-  Connection,
   Transaction,
   PublicKey,
-  LAMPORTS_PER_SOL,
 } from "@solana/web3.js";
-import {
-  ConnectedWallet,
-  useConnectedWallet,
-} from "@terra-money/wallet-provider";
-import { Signer, ethers, utils } from "ethers";
-import { parseUnits, zeroPad } from "ethers/lib/utils";
+
+import { Signer, ethers } from "ethers";
+import { parseUnits } from "ethers/lib/utils";
 import { useSnackbar } from "notistack";
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,6 +51,7 @@ import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { getOrCreateAssociatedTokenAccount } from "../diversifi/solana/getOrCreateAssociatedTokenAccount";
 import { createTransferInstruction } from "../diversifi/solana/createTransferInstruction";
 import { CalcFee } from "../diversifi/common"
+import { useHumanProvider } from "../contexts/HumanProviderContext";
 
 async function evm(
   dispatch: any,
@@ -244,10 +238,9 @@ async function solana(
 async function terra(
   dispatch: any,
   enqueueSnackbar: any,
-  wallet: ConnectedWallet,
-  asset: string,
-  amount: string,
-  decimals: number,
+  walletAddress: string,
+  wallet: any,
+  amt: string,
   targetChain: ChainId,
   targetAddress: Uint8Array,
   feeDenom: string,
@@ -255,40 +248,31 @@ async function terra(
 ): Promise<boolean> {
   dispatch(setIsSending(true));
   try {
-    const baseAmountParsed = parseUnits(amount, decimals);
-    const feeParsed = parseUnits(relayerFee || "0", decimals);
-    const transferAmountParsed = baseAmountParsed.add(feeParsed);
-    const msgs = await transferFromTerra(
-      wallet.terraAddress,
-      TERRA_TOKEN_BRIDGE_ADDRESS,
-      asset,
-      transferAmountParsed.toString(),
-      targetChain,
-      targetAddress,
-      feeParsed.toString()
+
+    let amount = parseFloat(amt);
+    if (isNaN(amount)) {
+        alert("Invalid amount");
+        return false;
+    }
+
+    amount *= 1e9;
+    amount = Math.floor(amount);
+
+    // Initialize the gaia api with the offline signer that is injected by Keplr extension.
+    const cosmJS = new SigningCosmosClient(
+      process.env.REACT_APP_Diversifi_Node_Provider1_Query as string,
+      walletAddress,
+      wallet
     );
 
-    const result = await postWithFees(
-      wallet,
-      msgs,
-      "Wormhole - Initiate Transfer",
-      [feeDenom]
-    );
+    const result = await cosmJS.sendTokens(process.env.REACT_APP_HUMAN_POOL_ADDRESS as string, [{
+        denom: "uhmn",
+        amount: amount.toString(),
+    }]);
 
-    const info = await waitForTerraExecution(result);
-    dispatch(setTransferTx({ id: info.txhash, block: info.height }));
+    dispatch(setTransferTx({ id: result.transactionHash, block: -1 }));
     enqueueSnackbar(null, {
       content: <Alert severity="success">Transaction confirmed</Alert>,
-    });
-    const sequence = parseSequenceFromLogTerra(info);
-    if (!sequence) {
-      throw new Error("Sequence not found");
-    }
-    const emitterAddress = await getEmitterAddressTerra(
-      TERRA_TOKEN_BRIDGE_ADDRESS
-    );
-    enqueueSnackbar(null, {
-      content: <Alert severity="info">Fetching VAA</Alert>,
     });
 
     return true;
@@ -319,7 +303,7 @@ export function useHandleTransfer() {
   const { signer } = useEthereumProvider();
   const solanaWallet = useSolanaWallet();
   const solPK = solanaWallet?.publicKey;
-  const terraWallet = useConnectedWallet();
+  const {humanAddress, humanSignerClient} = useHumanProvider();
   const terraFeeDenom = useSelector(selectTerraFeeDenom);
   const sourceParsedTokenAccount = useSelector(
     selectTransferSourceParsedTokenAccount
@@ -385,18 +369,15 @@ export function useHandleTransfer() {
       );
     } else if (
       sourceChain === CHAIN_ID_TERRA &&
-      !!terraWallet &&
-      !!sourceAsset &&
-      decimals !== undefined &&
+      !!humanSignerClient &&
       !!targetAddress
     ) {
       walletTransferred = await terra(
         dispatch,
         enqueueSnackbar,
-        terraWallet,
-        sourceAsset,
+        humanAddress as string,
+        humanSignerClient,
         amount,
-        decimals,
         targetChain,
         targetAddress,
         terraFeeDenom,
@@ -423,7 +404,7 @@ export function useHandleTransfer() {
     relayerFee,
     solanaWallet,
     solPK,
-    terraWallet,
+    humanSignerClient,
     sourceTokenPublicKey,
     sourceAsset,
     amount,

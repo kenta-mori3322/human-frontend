@@ -9,7 +9,7 @@ export default function useTransactionData() {
     fetch(
       "http://" +
         Diversifi_Node1 +
-        "/Diversifi-Technologies/diversifi/diversifi/transaction_data",
+        "/VigorousDeveloper/poc-human/pochuman/transaction_data",
       {
         headers: {
           Accept: "application/json",
@@ -21,6 +21,11 @@ export default function useTransactionData() {
       .then((response) => response.json())
       .then((data) => {
         const result = data.transactionData.map((tx: any) => {
+          const denoms = ["", "", "USDK", "HMN"];
+
+          let denom_index = 3;
+          if (tx.originChain == "Ethereum")
+            denom_index = 2;
           const item = {
             index: tx.index,
             confirmedBlockHash: tx.confirmedBlockHash,
@@ -34,8 +39,8 @@ export default function useTransactionData() {
               tx.targetChain +
               " " +
               tx.targetAddress,
-            amount: "" + ((+tx.amount) - (+tx.fee)) + " USDK",
-            fee: tx.fee + " USDK",
+            amount: tx.amount + " " + denoms[denom_index],
+            fee: tx.fee + " " + denoms[denom_index],
             status: tx.status,
             time: tx.time,
           };

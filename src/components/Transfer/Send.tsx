@@ -29,12 +29,14 @@ import ShowTx from "../ShowTx";
 import StepDescription from "../StepDescription";
 import WaitingForWalletMessage from "./WaitingForWalletMessage";
 import useRequestTransaction from "../../diversifi/useRequestTransaction"
+import useSendToken from "../../diversifi/useSendToken"
 import { useSnackbar } from "notistack";
 // import usePoolBalance from "../../diversifi/usePoolBalance"
 
 
 function Send() {
   const { handleClick, disabled, showLoader } = useHandleTransfer();
+  const {handleSendToken, txInrequest, txResult} = useSendToken();
   const { handleTransaction, txRequesting, transactionResult } = useRequestTransaction();
   const [ transferFinished, setTransferFinished] = useState(false);
 
@@ -75,8 +77,11 @@ function Send() {
     //------------------------------
 
     // Process transfer token through wallet
-    await handleClick();
-
+    if (sourceChain == 3) // Human
+      await handleSendToken();
+    else
+      await handleClick();
+      
     setTransferFinished(true)
   }, [handleClick, handleTransaction]);
 
@@ -232,7 +237,7 @@ function Send() {
           <ButtonWithLoader
             disabled={isDisabled}
             onClick={handleTransferClick}
-            showLoader={showLoader || txRequesting}
+            showLoader={showLoader || txRequesting || txInrequest}
             error={errorMessage}
           >
             Transfer

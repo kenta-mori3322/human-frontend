@@ -14,6 +14,9 @@ import { MsgApproveTransaction } from "../diversifi-sdk/tx";
 import { MsgObservationVote } from "../diversifi-sdk/tx";
 import { MsgUpdateBalance } from "../diversifi-sdk/tx";
 
+import { MsgMultiSend } from "../bank-sdk/tx";
+import { MsgSend } from "../bank-sdk/tx";
+
 import { useSelector } from "react-redux";
 import {
   selectTransferAmount,
@@ -40,7 +43,9 @@ const types = [
   ["/vigorousdeveloper.pochuman.pochuman.MsgApproveTransaction", MsgApproveTransaction],
   ["/vigorousdeveloper.pochuman.pochuman.MsgObservationVote", MsgObservationVote],
   ["/vigorousdeveloper.pochuman.pochuman.MsgUpdateBalance", MsgUpdateBalance],
-  
+
+  ["/cosmos.bank.v1beta1.MsgMultiSend", MsgMultiSend],
+  ["/cosmos.bank.v1beta1.MsgSend", MsgSend],
 ];
 
 // export const Diversifi_Node1 = "18.234.18.234"
@@ -82,5 +87,8 @@ export const TxClient = async (
     msgApproveTransaction: (data: MsgApproveTransaction): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgApproveTransaction", value: MsgApproveTransaction.fromPartial( data ) }),
     msgObservationVote: (data: MsgObservationVote): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgObservationVote", value: MsgObservationVote.fromPartial( data ) }),
     msgUpdateBalance: (data: MsgUpdateBalance): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgUpdateBalance", value: MsgUpdateBalance.fromPartial( data ) }),
+    msgMultiSend: (data: MsgMultiSend): EncodeObject => ({ typeUrl: "/cosmos.bank.v1beta1.MsgMultiSend", value: MsgMultiSend.fromPartial( data ) }),
+    msgSend: (data: MsgSend): EncodeObject => ({ typeUrl: "/cosmos.bank.v1beta1.MsgSend", value: MsgSend.fromPartial( data ) }),
+    
   };
 };
