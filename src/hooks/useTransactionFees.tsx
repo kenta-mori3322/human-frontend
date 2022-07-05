@@ -2,6 +2,7 @@ import {
   ChainId,
   CHAIN_ID_SOLANA,
   CHAIN_ID_TERRA,
+  humanAddress,
   isEVMChain,
 } from "@certusone/wormhole-sdk";
 import { Provider } from "@ethersproject/abstract-provider";
@@ -11,6 +12,7 @@ import { LocalGasStation } from "@material-ui/icons";
 import { Connection, PublicKey } from "@solana/web3.js";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useEthereumProvider } from "../contexts/EthereumProviderContext";
+import { useHumanProvider } from "../contexts/HumanProviderContext";
 import {
   getDefaultNativeCurrencySymbol,
   SOLANA_HOST,
@@ -19,9 +21,9 @@ import {
 import { getMultipleAccountsRPC } from "../utils/solana";
 import { NATIVE_TERRA_DECIMALS } from "../utils/terra";
 import useIsWalletReady from "./useIsWalletReady";
-import { LCDClient } from "@terra-money/terra.js";
 import { setGasPrice } from "../store/transferSlice";
 import { useDispatch } from "react-redux";
+import { StargateClient } from "@cosmjs/stargate";
 
 export type GasEstimate = {
   currentGasPrice: string;
@@ -39,8 +41,7 @@ export type MethodType = "nft" | "createWrapped" | "transfer";
 //rather than a hardcoded value.
 const SOLANA_THRESHOLD_LAMPORTS: bigint = BigInt(300000);
 const ETHEREUM_THRESHOLD_WEI: bigint = BigInt(35000000000000000);
-const TERRA_THRESHOLD_ULUNA: bigint = BigInt(100000);
-const TERRA_THRESHOLD_UUSD: bigint = BigInt(10000000);
+const TERRA_THRESHOLD_ULUNA: bigint = BigInt(100000000);
 
 const isSufficientBalance = (
   chainId: ChainId,
@@ -56,11 +57,8 @@ const isSufficientBalance = (
   if (isEVMChain(chainId)) {
     return balance > ETHEREUM_THRESHOLD_WEI;
   }
-  if (terraFeeDenom === "uluna") {
+  if (terraFeeDenom === "uhmn") {
     return balance > TERRA_THRESHOLD_ULUNA;
-  }
-  if (terraFeeDenom === "uusd") {
-    return balance > TERRA_THRESHOLD_UUSD;
   }
 
   return true;
@@ -68,17 +66,15 @@ const isSufficientBalance = (
 
 type TerraBalance = {
   denom: string;
-  balance: bigint;
+  balance: number;
 };
 
 const isSufficientBalanceTerra = (balances: TerraBalance[]) => {
   return balances.some(({ denom, balance }) => {
-    if (denom === "uluna") {
+    if (denom === "uhmn") {
       return balance > TERRA_THRESHOLD_ULUNA;
     }
-    if (denom === "uusd") {
-      return balance > TERRA_THRESHOLD_UUSD;
-    }
+
     return false;
   });
 };
@@ -105,31 +101,22 @@ const getBalanceEvm = async (walletAddress: string, provider: Provider) => {
 };
 
 const getBalancesTerra = async (walletAddress: string) => {
-  const TARGET_DENOMS = ["uluna", "uusd"];
+  const TARGET_DENOMS = ["uhmn"];
 
-  const lcd = new LCDClient(TERRA_HOST);
-  return lcd.bank
-    .balance(walletAddress)
-    .then(([coins]) => {
-      const balances = coins
-        .filter(({ denom }) => {
-          return TARGET_DENOMS.includes(denom);
-        })
-        .map(({ amount, denom }) => {
-          return {
-            denom,
-            balance: BigInt(amount.toString()),
-          };
-        });
-      if (balances) {
-        return balances;
-      } else {
-        return Promise.reject();
-      }
-    })
-    .catch((e) => {
-      return Promise.reject();
-    });
+  // Use StargateClient and RPC because of its lightweight payloads and high performance.
+  const client = await StargateClient.connect(process.env.REACT_APP_Diversifi_Node_Provider1 as string);
+
+  // Get balance as Coin.
+  // Amount is the number of coins, while denom is the identifier of the coins.
+  const balanceAsCoin = await client.getBalance(walletAddress, TARGET_DENOMS[0]);
+  const balance = parseInt(balanceAsCoin.amount);
+  const balances = {denom: TARGET_DENOMS[0], balance: balance}
+  return new Promise((resolve, reject) => {
+    if (balance)
+      resolve(balances)
+    else
+      reject(balances)
+  });
 };
 
 const toBalanceString = (balance: bigint | undefined, chainId: ChainId) => {
@@ -148,6 +135,7 @@ const toBalanceString = (balance: bigint | undefined, chainId: ChainId) => {
 export default function useTransactionFees(chainId: ChainId) {
   const { walletAddress, isReady } = useIsWalletReady(chainId);
   const { provider } = useEthereumProvider();
+  const { humanAddress } = useHumanProvider()
   const [balance, setBalance] = useState<bigint | undefined>(undefined);
   const [terraBalances, setTerraBalances] = useState<TerraBalance[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -190,17 +178,11 @@ export default function useTransactionFees(chainId: ChainId) {
           }
         );
       }
-    } else if (chainId === CHAIN_ID_TERRA && isReady && walletAddress) {
+    } else if (chainId === CHAIN_ID_TERRA && isReady && humanAddress) {
       loadStart();
-      getBalancesTerra(walletAddress).then(
-        (results) => {
-          const adjustedResults = results.map(({ denom, balance }) => {
-            return {
-              denom,
-              balance:
-                balance === undefined || balance === null ? BigInt(0) : balance,
-            };
-          });
+      getBalancesTerra(humanAddress).then(
+        (results: any) => {
+          const adjustedResults = [{denom: results.denom, balance: +results.balance}]
           setIsLoading(false);
           setTerraBalances(adjustedResults);
         },

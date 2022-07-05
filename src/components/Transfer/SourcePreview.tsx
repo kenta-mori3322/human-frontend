@@ -1,3 +1,4 @@
+import { CHAIN_ID_TERRA } from "@certusone/wormhole-sdk";
 import { makeStyles, Typography } from "@material-ui/core";
 import numeral from "numeral";
 import { useSelector } from "react-redux";
@@ -32,10 +33,7 @@ export default function SourcePreview() {
       <>
         <span>
           You will transfer {sourceAmount}{" "}
-          {relayerFee
-            ? `(+~${numeral(relayerFee).format("0.00")} relayer fee)`
-            : ""}
-        </span>
+          </span>
         <SmartAddress
           chainId={sourceChain}
           parsedTokenAccount={sourceParsedTokenAccount}
@@ -48,7 +46,22 @@ export default function SourcePreview() {
         ) : null}
         <span>on {CHAINS_BY_ID[sourceChain].name}</span>
       </>
-    ) : (
+    ) : 
+    sourceChain && sourceChain == CHAIN_ID_TERRA ? (
+      <>
+        <span>
+          You will transfer {sourceAmount}{" HMN "}
+        </span>
+        
+        {sourceWalletAddress ? (
+          <>
+            <span>from</span>
+            <SmartAddress chainId={sourceChain} address={sourceWalletAddress} />
+          </>
+        ) : null}
+        <span>on {CHAINS_BY_ID[sourceChain].name}</span>
+      </>
+    ):(
       ""
     );
 

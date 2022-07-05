@@ -2,6 +2,7 @@ import {
   CHAIN_ID_ACALA,
   CHAIN_ID_KARURA,
   CHAIN_ID_SOLANA,
+  CHAIN_ID_TERRA,
   isEVMChain,
 } from "@certusone/wormhole-sdk";
 import { ethers } from "ethers";
@@ -217,51 +218,13 @@ export const selectTransferSourceError = (
   if (!state.transfer.sourceChain) {
     return "Select a source chain";
   }
-  if (!state.transfer.sourceParsedTokenAccount) {
+  if (!state.transfer.sourceParsedTokenAccount && state.transfer.sourceChain != CHAIN_ID_TERRA) {
     return "Select a token";
   }
   if (!state.transfer.amount) {
     return "Enter an amount";
   }
-  if (
-    state.transfer.sourceChain === CHAIN_ID_SOLANA &&
-    !state.transfer.sourceParsedTokenAccount.publicKey
-  ) {
-    return "Token account unavailable";
-  }
-  if (!state.transfer.sourceParsedTokenAccount.uiAmountString) {
-    return "Token amount unavailable";
-  }
-  // no NFT check - NFTs should be blocked by all token pickers
-  try {
-    // these may trigger error: fractional component exceeds decimals
-    if (
-      parseUnits(
-        state.transfer.amount,
-        state.transfer.sourceParsedTokenAccount.decimals
-      ).lte(0)
-    ) {
-      return "Amount must be greater than zero";
-    }
-    if (
-      parseUnits(
-        state.transfer.amount,
-        state.transfer.sourceParsedTokenAccount.decimals
-      ).gt(
-        parseUnits(
-          state.transfer.sourceParsedTokenAccount.uiAmountString,
-          state.transfer.sourceParsedTokenAccount.decimals
-        )
-      )
-    ) {
-      return "Amount may not be greater than balance";
-    }
-  } catch (e: any) {
-    if (e?.message) {
-      return e.message.substring(0, e.message.indexOf("("));
-    }
-    return "Invalid amount";
-  }
+
   return undefined;
 };
 export const selectTransferIsSourceComplete = (state: RootState) =>

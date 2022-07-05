@@ -202,21 +202,9 @@ function Send() {
   return (
     <>
       <StepDescription>
-        Transfer the tokens through Kima Pool.
+        Transfer the tokens through Human Pool.
       </StepDescription>
       <KeyAndBalance chainId={sourceChain} />
-      {sourceChain === CHAIN_ID_TERRA && (
-        <TerraFeeDenomPicker disabled={disabled} />
-      )}
-      <Alert severity="info" variant="outlined">
-        This will initiate the transfer on {CHAINS_BY_ID[sourceChain].name} and
-        wait for finalization. If you navigate away from this page before
-        completing Step 4, you will have to perform the recovery workflow to
-        complete the transfer.
-      </Alert>
-      {sourceChain === CHAIN_ID_SOLANA && CLUSTER === "mainnet" && (
-        <SolanaTPSWarning />
-      )}
       {approveButtonNeeded ? (
         <>
           <FormControlLabel

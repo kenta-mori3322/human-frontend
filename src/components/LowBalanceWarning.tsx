@@ -18,11 +18,9 @@ function LowBalanceWarning({ chainId }: { chainId: ChainId }) {
   const classes = useStyles();
   const { isReady } = useIsWalletReady(chainId);
   const transactionFeeWarning = useTransactionFees(chainId);
-  const relayerSelected = !!useSelector(selectTransferUseRelayer);
 
   const displayWarning =
     isReady &&
-    !relayerSelected &&
     (chainId === CHAIN_ID_TERRA || transactionFeeWarning.balanceString) &&
     transactionFeeWarning.isSufficientBalance === false;
 

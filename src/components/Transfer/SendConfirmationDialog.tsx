@@ -1,4 +1,4 @@
-import { CHAIN_ID_SOLANA, isEVMChain } from "@certusone/wormhole-sdk";
+import { CHAIN_ID_SOLANA, CHAIN_ID_TERRA, isEVMChain } from "@certusone/wormhole-sdk";
 import {
   Button,
   Dialog,
@@ -39,6 +39,7 @@ function SendConfirmationContent({
   const { targetChain, targetAsset, symbol, tokenName, logo } = useTargetInfo();
   const originChain = useSelector(selectTransferOriginChain);
   const sendAmount = useSelector(selectTransferAmount);
+  const denoms = ["", "", "USDK", "HMN"];
 
   //TODO this check is essentially duplicated.
   const deservesTimeout = useMemo(() => {
@@ -120,8 +121,9 @@ function SendConfirmationContent({
           targetAsset={targetAsset ?? undefined}
           targetChain={targetChain}
         />
+
         <Typography variant="subtitle1" style={{ marginBottom: 8 }}>
-          You will receive {+sendAmount - CalcFee()} USDK ({CalcFee()} USDK - service fee).
+          You will receive {+sendAmount - CalcFee()} {denoms[+sourceChain]} ({CalcFee()} {denoms[+sourceChain]} - service fee).
         </Typography>
 
         {sourceChain === CHAIN_ID_SOLANA && CLUSTER === "mainnet" && (

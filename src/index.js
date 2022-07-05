@@ -26,10 +26,12 @@ ReactDOM.render(
               <SolanaWalletProvider>
                 <EthereumProviderProvider>
                   <HumanchainProvider>
-                    <HashRouter>
-                      <BackgroundImage />
-                      <App />
-                    </HashRouter>
+                    <TerraWalletProvider>
+                      <HashRouter>
+                        <BackgroundImage />
+                        <App />
+                      </HashRouter>
+                    </TerraWalletProvider>
                   </HumanchainProvider>
                 </EthereumProviderProvider>
               </SolanaWalletProvider>
