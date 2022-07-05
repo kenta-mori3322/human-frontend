@@ -6,11 +6,13 @@ import {
   OfflineSigner,
   EncodeObject,
 } from "@cosmjs/proto-signing";
-import {
-  MsgRequestTransaction,
-  MsgApproveTransaction,
-  MsgFetchBalance,
-} from "../diversifi-sdk/tx";
+
+import { MsgRequestTransaction } from "../diversifi-sdk/tx";
+import { MsgTranfserPoolcoin } from "../diversifi-sdk/tx";
+import { MsgKeysignVote } from "../diversifi-sdk/tx";
+import { MsgApproveTransaction } from "../diversifi-sdk/tx";
+import { MsgObservationVote } from "../diversifi-sdk/tx";
+import { MsgUpdateBalance } from "../diversifi-sdk/tx";
 
 import { useSelector } from "react-redux";
 import {
@@ -32,18 +34,13 @@ interface SignAndBroadcastOptions {
 }
 
 const types = [
-  [
-    "/DiversifiTechnologies.diversifi.diversifi.MsgRequestTransaction",
-    MsgRequestTransaction,
-  ],
-  [
-    "/DiversifiTechnologies.diversifi.diversifi.MsgApproveTransaction",
-    MsgApproveTransaction,
-  ],
-  [
-    "/DiversifiTechnologies.diversifi.diversifi.MsgFetchBalance",
-    MsgFetchBalance,
-  ],
+  ["/vigorousdeveloper.pochuman.pochuman.MsgRequestTransaction", MsgRequestTransaction],
+  ["/vigorousdeveloper.pochuman.pochuman.MsgTranfserPoolcoin", MsgTranfserPoolcoin],
+  ["/vigorousdeveloper.pochuman.pochuman.MsgKeysignVote", MsgKeysignVote],
+  ["/vigorousdeveloper.pochuman.pochuman.MsgApproveTransaction", MsgApproveTransaction],
+  ["/vigorousdeveloper.pochuman.pochuman.MsgObservationVote", MsgObservationVote],
+  ["/vigorousdeveloper.pochuman.pochuman.MsgUpdateBalance", MsgUpdateBalance],
+  
 ];
 
 // export const Diversifi_Node1 = "18.234.18.234"
@@ -51,16 +48,6 @@ export const Diversifi_Node1 = process.env.REACT_APP_Diversifi_Node_Provider1;
 
 export const MissingWalletError = new Error("wallet is required");
 export const registry = new Registry(<any>types);
-
-export async function CreateAddress(): Promise<OfflineSigner> {
-  const mnemonic =
-    "pet apart myth reflect stuff force attract taste caught fit exact ice slide sheriff state since unusual gaze practice course mesh magnet ozone purchase";
-  const wallet = await DirectSecp256k1HdWallet.fromMnemonic(mnemonic, {
-    prefix: "kima",
-  });
-
-  return wallet;
-}
 
 export const CalcFee = () => {
   const sendAmount = useSelector(selectTransferAmount);
@@ -88,23 +75,12 @@ export const TxClient = async (
   const { address } = (await wallet.getAccounts())[0];
 
   return {
-    signAndBroadcast: (
-      msgs: EncodeObject[],
-      { fee, memo }: SignAndBroadcastOptions = { fee: defaultFee, memo: "" }
-    ) => client.signAndBroadcast(address, msgs, fee, memo),
-    msgRequestTransaction: (data: MsgRequestTransaction): EncodeObject => ({
-      typeUrl:
-        "/DiversifiTechnologies.diversifi.diversifi.MsgRequestTransaction",
-      value: MsgRequestTransaction.fromPartial(data),
-    }),
-    msgApproveTransaction: (data: MsgApproveTransaction): EncodeObject => ({
-      typeUrl:
-        "/DiversifiTechnologies.diversifi.diversifi.MsgApproveTransaction",
-      value: MsgApproveTransaction.fromPartial(data),
-    }),
-    msgFetchBalance: (data: MsgFetchBalance): EncodeObject => ({
-      typeUrl: "/DiversifiTechnologies.diversifi.diversifi.MsgFetchBalance",
-      value: MsgFetchBalance.fromPartial(data),
-    }),
+    signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgRequestTransaction: (data: MsgRequestTransaction): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgRequestTransaction", value: MsgRequestTransaction.fromPartial( data ) }),
+    msgTranfserPoolcoin: (data: MsgTranfserPoolcoin): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgTranfserPoolcoin", value: MsgTranfserPoolcoin.fromPartial( data ) }),
+    msgKeysignVote: (data: MsgKeysignVote): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgKeysignVote", value: MsgKeysignVote.fromPartial( data ) }),
+    msgApproveTransaction: (data: MsgApproveTransaction): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgApproveTransaction", value: MsgApproveTransaction.fromPartial( data ) }),
+    msgObservationVote: (data: MsgObservationVote): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgObservationVote", value: MsgObservationVote.fromPartial( data ) }),
+    msgUpdateBalance: (data: MsgUpdateBalance): EncodeObject => ({ typeUrl: "/vigorousdeveloper.pochuman.pochuman.MsgUpdateBalance", value: MsgUpdateBalance.fromPartial( data ) }),
   };
 };

@@ -1,7 +1,4 @@
 import {
-  CHAIN_ID_SOLANA,
-  CHAIN_ID_TERRA,
-  CHAIN_ID_ETH,
   isEVMChain,
 } from "@certusone/wormhole-sdk";
 import { Checkbox, FormControlLabel } from "@material-ui/core";
@@ -26,14 +23,10 @@ import {
   selectTransferTransferTx,
   selectTransferTargetAddressHex,
 } from "../../store/selectors";
-import { CHAINS_BY_ID, CLUSTER } from "../../utils/consts";
 import ButtonWithLoader from "../ButtonWithLoader";
 import KeyAndBalance from "../KeyAndBalance";
 import ShowTx from "../ShowTx";
-import SolanaTPSWarning from "../SolanaTPSWarning";
 import StepDescription from "../StepDescription";
-import TerraFeeDenomPicker from "../TerraFeeDenomPicker";
-import TransactionProgress from "../TransactionProgress";
 import WaitingForWalletMessage from "./WaitingForWalletMessage";
 import useRequestTransaction from "../../diversifi/useRequestTransaction"
 import { useSnackbar } from "notistack";

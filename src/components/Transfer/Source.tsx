@@ -120,7 +120,7 @@ function Source() {
   const handleNextClick = useCallback(() => {
     if (walletAddress) {
 
-      if (targetChain == 1 && +humanBalance < +amount 
+      if (targetChain == 3 && +humanBalance < +amount 
         || targetChain == 2 && +ethereumBalance < +amount) {
         // Show notification
         enqueueSnackbar(null, {
@@ -182,13 +182,6 @@ function Source() {
         </div>
       </div>
       <KeyAndBalance chainId={sourceChain} />
-
-      {/* {isReady || uiAmountString ? (
-        <div className={classes.transferField}>
-          <TokenSelector disabled={shouldLockFields} />
-        </div>
-      ) : null} */}
-
       <>
         <LowBalanceWarning chainId={sourceChain} />
         {sourceChain === CHAIN_ID_SOLANA && CLUSTER === "mainnet" && (

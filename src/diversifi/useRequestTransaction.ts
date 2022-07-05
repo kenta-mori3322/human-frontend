@@ -14,7 +14,8 @@ import { useSelector } from "react-redux";
 import { useCallback, useMemo, useState } from "react";
 import { MsgRequestTransaction } from "../diversifi-sdk/tx";
 import { ChainID } from '@certusone/wormhole-sdk/lib/cjs/proto/publicrpc/v1/publicrpc';
-import { CreateAddress, TxClient, MissingWalletError, CalcFee} from "./common"
+import { TxClient, MissingWalletError, CalcFee} from "./common"
+import { useHumanProvider } from "../contexts/HumanProviderContext"
 
 export default function useRequestTransaction() {
   const [transactionResult, setTransactionResult] = useState("");
@@ -28,24 +29,23 @@ export default function useRequestTransaction() {
   const targetAddressHex = useSelector(selectTransferTargetAddressHex);
   const serviceFee = CalcFee();
 
+  const {
+    humanSignerClient
+  } = useHumanProvider();
+
   const sendMsgRequestTransaction = async (fee = [], memo = '') => {
     try {
-      const wallet = await CreateAddress();
-      const client = await TxClient(wallet);
-      const [firstAccount] = await wallet.getAccounts();
+      const client = await TxClient(humanSignerClient);
+      const [firstAccount] = await humanSignerClient.getAccounts();
 
-      let oChain = "Solana";
+      let oChain = "Human";
       if (sourceChain == ChainID.CHAIN_ID_ETHEREUM) {
         oChain = "Ethereum"
-      } else if (sourceChain == ChainID.CHAIN_ID_POLYGON) {
-        oChain = "Polygon"
       }
 
-      let tChain = "Solana"
+      let tChain = "Human"
       if (targetChain == ChainID.CHAIN_ID_ETHEREUM) {
         tChain = "Ethereum"
-      } else if (targetChain == ChainID.CHAIN_ID_POLYGON) {
-        tChain = "Polygon"
       }
 
       const value: MsgRequestTransaction = {

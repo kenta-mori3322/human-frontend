@@ -226,7 +226,7 @@ function App() {
         </AppBar>
       ) : null}
       <div className={classes.content}>
-        {["/transfer", "/explorer", "/validators", "/wallet"].includes(pathname) ? (
+        {["/transfer", "/explorer", "/validators"].includes(pathname) ? (
           <Container maxWidth="md" style={{ paddingBottom: 24 }}>
             <Tabs
               value={pathname}
@@ -237,7 +237,6 @@ function App() {
               <Tab label="Transfer" value="/transfer" />
               <Tab label="Transactions" value="/explorer" />
               <Tab label="Validators" value="/validators" />
-              <Tab label="Wallet" value="/wallet" />
             </Tabs>
           </Container>
         ) : null}
@@ -250,9 +249,6 @@ function App() {
           </Route>
           <Route exact path="/validators">
             <Validators />
-          </Route>
-          <Route exact path="/wallet">
-            <Wallet />
           </Route>
           <Route>
             <Redirect to="/transfer" />
