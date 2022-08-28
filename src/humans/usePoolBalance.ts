@@ -6,14 +6,14 @@ export default function usePoolBalance() {
 
   let interval: any;
 
-  // const Diversifi_Node1 = "18.234.18.234"
-  const Diversifi_Node1 = process.env.REACT_APP_Diversifi_Node_Provider1_Query;
+  // const Humans_Node1 = "18.234.18.234"
+  const Humans_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
 
   const fetchBalance = async () => {
     fetch(
       "http://" +
-        Diversifi_Node1 +
-        "/VigorousDeveloper/poc-human/pochuman/pool_balance",
+        Humans_Node1 +
+        "/humansdotai/humans/humans/pool_balance",
       {
         headers: {
           Accept: "application/json",

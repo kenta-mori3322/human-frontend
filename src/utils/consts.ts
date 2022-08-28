@@ -88,7 +88,7 @@ export const getDefaultNativeCurrencySymbol = (chainId: ChainId) =>
     : chainId === CHAIN_ID_BSC
     ? "BNB"
     : chainId === CHAIN_ID_TERRA
-    ? "HMN"
+    ? "HEART"
     : chainId === CHAIN_ID_POLYGON
     ? "MATIC"
     : chainId === CHAIN_ID_AVAX

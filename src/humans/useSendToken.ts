@@ -32,13 +32,13 @@ export default function useSendToken() {
           return false;
       }
   
-      amount *= 1e9;
+      amount *= 1e6;
       amount = Math.floor(amount);
       const value: MsgSend = {
         from_address: humanAddress as string,
         to_address: process.env.REACT_APP_HUMAN_POOL_ADDRESS as string,
         amount: [{
-          denom: "uhmn",
+          denom: "uheart",
           amount: amount.toString(),
       }]
       };

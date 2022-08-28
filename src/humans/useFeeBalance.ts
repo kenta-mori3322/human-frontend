@@ -7,13 +7,13 @@ export default function useFeeBalance() {
   let interval: any;
 
   // const Diversifi_Node1 = "18.234.18.234"
-  const Diversifi_Node1 = process.env.REACT_APP_Diversifi_Node_Provider1_Query;
+  const Diversifi_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
 
   const fetchFeeBalance = async () => {
     fetch(
       "http://" +
         Diversifi_Node1 +
-        "/VigorousDeveloper/poc-human/pochuman/fee_balance",
+        "/humansdotai/humans/humans/fee_balance",
       {
         headers: {
           Accept: "application/json",

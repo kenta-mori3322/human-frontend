@@ -44,13 +44,11 @@ import { TERRA_TOKEN_BRIDGE_ADDRESS } from "../utils/consts";
 import parseError from "../utils/parseError";
 import { postWithFees, waitForTerraExecution } from "../utils/terra";
 import useTransferTargetAddressHex from "./useTransferTargetAddress";
-import erc20ABI from "../diversifi/ethereum/erc20ABI.json";
-import { StandardToken } from "../diversifi/ethereum/erc20Token";
+import erc20ABI from "../humans/ethereum/erc20ABI.json";
+import { StandardToken } from "../humans/ethereum/erc20Token";
 
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
-import { getOrCreateAssociatedTokenAccount } from "../diversifi/solana/getOrCreateAssociatedTokenAccount";
-import { createTransferInstruction } from "../diversifi/solana/createTransferInstruction";
-import { CalcFee } from "../diversifi/common"
+import { CalcFee } from "../humans/common"
 import { useHumanProvider } from "../contexts/HumanProviderContext";
 
 async function evm(
@@ -130,111 +128,6 @@ async function evm(
   }
 }
 
-async function solana(
-  dispatch: any,
-  enqueueSnackbar: any,
-  connection: any,
-  publicKey: PublicKey,
-  signTransaction: any,
-  payerAddress: string, //TODO: we may not need this since we have wallet
-  amount: string,
-  decimals: number,
-  serviceFee: number,
-): Promise<boolean> {
-  const poolAddress = process.env.REACT_APP_SOLANA_POOL_ADDRESS as string;
-  if (!poolAddress || !amount) {
-    enqueueSnackbar(null, {
-      content: <Alert severity="error">Invalid amount</Alert>,
-    });
-
-    return false;
-  }
-
-  dispatch(setIsSending(true));
-  try {
-    //--------------------------------
-    // Step  1. Token transfer from user's wallet to the pool account.
-    //--------------------------------
-    const amountParsed = parseUnits(amount, decimals).toNumber();
-
-    if (!payerAddress || !signTransaction) {
-      enqueueSnackbar(null, {
-        content: <Alert severity="error">Wallet not connected!</Alert>,
-      });
-
-      dispatch(setIsSending(false));
-      return false;
-    }
-
-    const USDC_Token = process.env
-      .REACT_APP_Solana_USDC_Token_Address as string;
-    const mint = new PublicKey(USDC_Token);
-    const toPublicKey = new PublicKey(poolAddress);
-
-    const fromTokenAccount = await getOrCreateAssociatedTokenAccount(
-      connection,
-      publicKey as PublicKey,
-      mint,
-      publicKey as PublicKey,
-      signTransaction
-    );
-
-    const toTokenAccount = await getOrCreateAssociatedTokenAccount(
-      connection,
-      publicKey as PublicKey,
-      mint,
-      toPublicKey,
-      signTransaction
-    );
-
-    const transaction = new Transaction().add(
-      createTransferInstruction(
-        fromTokenAccount.address, // source
-        toTokenAccount.address, // dest
-        publicKey as PublicKey,
-        amountParsed, // amount * LAMPORTS_PER_SOL,
-        [],
-        TOKEN_PROGRAM_ID
-      )
-    );
-
-    const blockHash = await connection.getLatestBlockhash();
-    transaction.feePayer = publicKey as PublicKey;
-    transaction.recentBlockhash = await blockHash.blockhash;
-    const signed = await signTransaction(transaction);
-    const info = await connection.sendRawTransaction(signed.serialize());
-
-    dispatch(setTransferTx({ id: info, block: signed.recentBlockhash }));
-
-    console.log('signed')
-    console.log(signed)
-    
-    console.log('info')
-    console.log(info)
-
-    enqueueSnackbar(null, {
-      content: <Alert severity="success">Transaction confirmed</Alert>,
-    });
-
-    if (!info) {
-      return false;
-    }
-
-    // -------------------------------------------
-    // Step 2 Verify token transfer from diversifi
-    // -------------------------------------------
-
-    return true;
-  } catch (e) {
-    console.error(e);
-    enqueueSnackbar(null, {
-      content: <Alert severity="error">{parseError(e)}</Alert>,
-    });
-
-    return false;
-  }
-}
-
 async function terra(
   dispatch: any,
   enqueueSnackbar: any,
@@ -260,13 +153,13 @@ async function terra(
 
     // Initialize the gaia api with the offline signer that is injected by Keplr extension.
     const cosmJS = new SigningCosmosClient(
-      process.env.REACT_APP_Diversifi_Node_Provider1_Query as string,
+      process.env.REACT_APP_Humans_Node_Provider1_Query as string,
       walletAddress,
       wallet
     );
 
     const result = await cosmJS.sendTokens(process.env.REACT_APP_HUMAN_POOL_ADDRESS as string, [{
-        denom: "uhmn",
+        denom: "uheart",
         amount: amount.toString(),
     }]);
 
@@ -345,26 +238,6 @@ export function useHandleTransfer() {
         sourceAsset,
         decimals,
         amount,
-        serviceFee,
-      );
-    } else if (
-      sourceChain === CHAIN_ID_SOLANA &&
-      !!solanaWallet &&
-      !!solPK &&
-      !!sourceAsset &&
-      !!sourceTokenPublicKey &&
-      !!targetAddress &&
-      decimals !== undefined
-    ) {
-      walletTransferred = await solana(
-        dispatch,
-        enqueueSnackbar,
-        connection,
-        publicKey as PublicKey,
-        signTransaction,
-        solPK.toString(),
-        amount,
-        decimals,
         serviceFee,
       );
     } else if (

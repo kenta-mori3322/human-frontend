@@ -38,7 +38,7 @@ import StepDescription from "../StepDescription";
 import SourceAssetWarning from "./SourceAssetWarning";
 import ChainWarningMessage from "../ChainWarningMessage";
 import useGetSourceParsedTokens from "../../hooks/useGetSourceParsedTokenAccounts"
-import usePoolBalance from "../../diversifi/usePoolBalance"
+import usePoolBalance from "../../humans/usePoolBalance"
 import { useSnackbar } from "notistack";
 
 const useStyles = makeStyles((theme) => ({

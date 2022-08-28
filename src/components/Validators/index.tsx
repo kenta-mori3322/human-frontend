@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { useMemo } from "react";
 import { COLORS } from "../../muiTheme";
 import MuiReactTable from "./tableComponents/MuiReactTable";
-import useTransactionValidator from "../../diversifi/useTransactionValidator";
+import useTransactionValidator from "../../humans/useTransactionValidator";
 
 const useStyles = makeStyles((theme) => ({
   logoPositioner: {

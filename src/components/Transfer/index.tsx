@@ -32,8 +32,8 @@ import SourcePreview from "./SourcePreview";
 import Target from "./Target";
 import TargetPreview from "./TargetPreview";
 
-import usePoolBalance from "../../diversifi/usePoolBalance"
-import useFeeBalance from "../../diversifi/useFeeBalance"
+import usePoolBalance from "../../humans/usePoolBalance"
+import useFeeBalance from "../../humans/useFeeBalance"
 
 function Transfer() {
   //useCheckIfWormholeWrapped();
@@ -103,8 +103,8 @@ function Transfer() {
         </div>
         <div style={{ display: "flex", flexDirection: "column", flex: "1" }}>
           <Typography style={{ fontSize: "20px", textAlign: "center" }} variant="caption">HumanChain</Typography>
-          <Typography style={{ fontSize: "16px", textAlign: "center" }} variant="caption">Pool: {humanBalance} HMN</Typography>
-          <Typography style={{ fontSize: "16px", textAlign: "center" }} variant="caption">Fee: {humanFeeBalance} HMN</Typography>
+          <Typography style={{ fontSize: "16px", textAlign: "center" }} variant="caption">Pool: {humanBalance} HEART</Typography>
+          <Typography style={{ fontSize: "16px", textAlign: "center" }} variant="caption">Fee: {humanFeeBalance} HEART</Typography>
         </div>
       </div>
     

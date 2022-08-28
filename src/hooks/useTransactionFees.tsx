@@ -57,7 +57,7 @@ const isSufficientBalance = (
   if (isEVMChain(chainId)) {
     return balance > ETHEREUM_THRESHOLD_WEI;
   }
-  if (terraFeeDenom === "uhmn") {
+  if (terraFeeDenom === "uheart") {
     return balance > TERRA_THRESHOLD_ULUNA;
   }
 
@@ -71,7 +71,7 @@ type TerraBalance = {
 
 const isSufficientBalanceTerra = (balances: TerraBalance[]) => {
   return balances.some(({ denom, balance }) => {
-    if (denom === "uhmn") {
+    if (denom === "uheart") {
       return balance > TERRA_THRESHOLD_ULUNA;
     }
 
@@ -101,10 +101,10 @@ const getBalanceEvm = async (walletAddress: string, provider: Provider) => {
 };
 
 const getBalancesTerra = async (walletAddress: string) => {
-  const TARGET_DENOMS = ["uhmn"];
+  const TARGET_DENOMS = ["uheart"];
 
   // Use StargateClient and RPC because of its lightweight payloads and high performance.
-  const client = await StargateClient.connect(process.env.REACT_APP_Diversifi_Node_Provider1 as string);
+  const client = await StargateClient.connect(process.env.REACT_APP_Humans_Node_Provider1 as string);
 
   // Get balance as Coin.
   // Amount is the number of coins, while denom is the identifier of the coins.

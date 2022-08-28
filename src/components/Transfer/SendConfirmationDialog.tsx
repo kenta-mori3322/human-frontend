@@ -21,7 +21,7 @@ import SmartAddress from "../SmartAddress";
 import SolanaTPSWarning from "../SolanaTPSWarning";
 import { useTargetInfo } from "./Target";
 import TokenWarning from "./TokenWarning";
-import { CalcFee } from "../../diversifi/common"
+import { CalcFee } from "../../humans/common"
 
 function SendConfirmationContent({
   open,
@@ -39,7 +39,7 @@ function SendConfirmationContent({
   const { targetChain, targetAsset, symbol, tokenName, logo } = useTargetInfo();
   const originChain = useSelector(selectTransferOriginChain);
   const sendAmount = useSelector(selectTransferAmount);
-  const denoms = ["", "", "USDK", "HMN"];
+  const denoms = ["", "", "USDK", "HEART"];
 
   console.log("sendAmount", sendAmount)
   //TODO this check is essentially duplicated.

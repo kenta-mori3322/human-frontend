@@ -52,11 +52,11 @@ export const HumanchainProvider = ({
               // Staking coin information
               stakeCurrency: {
                 // Coin denomination to be displayed to the user.
-                coinDenom: "HMN",
+                coinDenom: "HEART",
                 // Actual denom (i.e. uatom, uscrt) used by the blockchain.
-                coinMinimalDenom: "uhmn",
+                coinMinimalDenom: "uheart",
                 // # of decimal points to convert minimal denomination to user-facing denomination.
-                coinDecimals: 9,
+                coinDecimals: 6,
                 // (Optional) Keplr can show the fiat value of the coin if a coingecko id is provided.
                 // You can get id from https://api.coingecko.com/api/v3/coins/list if it is listed.
                 // coinGeckoId: ""
@@ -77,11 +77,11 @@ export const HumanchainProvider = ({
               // List of all coin/tokens used in this chain.
               currencies: [{
                 // Coin denomination to be displayed to the user.
-                coinDenom: "HMN",
+                coinDenom: "HEART",
                 // Actual denom (i.e. uatom, uscrt) used by the blockchain.
-                coinMinimalDenom: "uhmn",
+                coinMinimalDenom: "uheart",
                 // # of decimal points to convert minimal denomination to user-facing denomination.
-                coinDecimals: 9,
+                coinDecimals: 6,
                 // (Optional) Keplr can show the fiat value of the coin if a coingecko id is provided.
                 // You can get id from https://api.coingecko.com/api/v3/coins/list if it is listed.
                 // coinGeckoId: ""
@@ -89,11 +89,11 @@ export const HumanchainProvider = ({
               // List of coin/tokens used as a fee token in this chain.
               feeCurrencies: [{
                 // Coin denomination to be displayed to the user.
-                coinDenom: "HMN",
+                coinDenom: "HEART",
                 // Actual denom (i.e. uatom, uscrt) used by the blockchain.
-                coinMinimalDenom: "uhmn",
+                coinMinimalDenom: "uheart",
                 // # of decimal points to convert minimal denomination to user-facing denomination.
-                coinDecimals: 9,
+                coinDecimals: 6,
                 // (Optional) Keplr can show the fiat value of the coin if a coingecko id is provided.
                 // You can get id from https://api.coingecko.com/api/v3/coins/list if it is listed.
                 // coinGeckoId: ""

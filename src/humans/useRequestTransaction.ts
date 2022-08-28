@@ -12,7 +12,7 @@ import {
 
 import { useSelector } from "react-redux";
 import { useCallback, useMemo, useState } from "react";
-import { MsgRequestTransaction } from "../diversifi-sdk/tx";
+import { MsgRequestTransaction } from "../humans-sdk/tx";
 import { ChainID } from '@certusone/wormhole-sdk/lib/cjs/proto/publicrpc/v1/publicrpc';
 import { TxClient, MissingWalletError, CalcFee} from "./common"
 import { useHumanProvider } from "../contexts/HumanProviderContext"

@@ -50,7 +50,7 @@ export default function SourcePreview() {
     sourceChain && sourceChain == CHAIN_ID_TERRA ? (
       <>
         <span>
-          You will transfer {sourceAmount}{" HMN "}
+          You will transfer {sourceAmount}{" HEART "}
         </span>
         
         {sourceWalletAddress ? (

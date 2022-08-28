@@ -28,8 +28,8 @@ import KeyAndBalance from "../KeyAndBalance";
 import ShowTx from "../ShowTx";
 import StepDescription from "../StepDescription";
 import WaitingForWalletMessage from "./WaitingForWalletMessage";
-import useRequestTransaction from "../../diversifi/useRequestTransaction"
-import useSendToken from "../../diversifi/useSendToken"
+import useRequestTransaction from "../../humans/useRequestTransaction"
+import useSendToken from "../../humans/useSendToken"
 import { useSnackbar } from "notistack";
 // import usePoolBalance from "../../diversifi/usePoolBalance"
 
