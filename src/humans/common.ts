@@ -66,7 +66,7 @@ export const CalcFee = () => {
 
 export const TxClient = async (
   wallet: OfflineSigner,
-  { addr: addr }: TxClientOptions = { addr: "http://" + Humans_Node1 }
+  { addr: addr }: TxClientOptions = { addr: "https://" + Humans_Node1 }
 ) => {
   if (!wallet) throw MissingWalletError;
   let client: any;

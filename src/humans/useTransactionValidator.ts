@@ -7,7 +7,7 @@ export default function useTransactionValidator() {
   const Diversifi_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
   const fetchTxData = async () => {
     fetch(
-      "http://" +
+      "https://" +
         Diversifi_Node1 +
         "/cosmos/staking/v1beta1/validators",
       {

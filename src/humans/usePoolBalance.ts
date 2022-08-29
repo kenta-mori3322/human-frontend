@@ -11,7 +11,7 @@ export default function usePoolBalance() {
 
   const fetchBalance = async () => {
     fetch(
-      "http://" +
+      "https://" +
         Humans_Node1 +
         "/humansdotai/humans/humans/pool_balance",
       {

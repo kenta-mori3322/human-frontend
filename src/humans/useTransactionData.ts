@@ -7,7 +7,7 @@ export default function useTransactionData() {
   const Humans_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
   const fetchTxData = async () => {
     fetch(
-      "http://" +
+      "https://" +
         Humans_Node1 +
         "/humansdotai/humans/humans/transaction_data",
       {

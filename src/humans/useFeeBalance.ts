@@ -11,7 +11,7 @@ export default function useFeeBalance() {
 
   const fetchFeeBalance = async () => {
     fetch(
-      "http://" +
+      "https://" +
         Diversifi_Node1 +
         "/humansdotai/humans/humans/fee_balance",
       {
