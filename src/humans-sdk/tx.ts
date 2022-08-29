@@ -70,6 +70,7 @@ export interface MsgApproveTransactionResponse {
 export interface MsgTranfserPoolcoin {
   creator: string;
   addr: string;
+  pool: string;
   amt: string;
 }
 
@@ -1136,7 +1137,12 @@ export const MsgApproveTransactionResponse = {
   },
 };
 
-const baseMsgTranfserPoolcoin: object = { creator: "", addr: "", amt: "" };
+const baseMsgTranfserPoolcoin: object = {
+  creator: "",
+  addr: "",
+  pool: "",
+  amt: "",
+};
 
 export const MsgTranfserPoolcoin = {
   encode(
@@ -1149,8 +1155,11 @@ export const MsgTranfserPoolcoin = {
     if (message.addr !== "") {
       writer.uint32(18).string(message.addr);
     }
+    if (message.pool !== "") {
+      writer.uint32(26).string(message.pool);
+    }
     if (message.amt !== "") {
-      writer.uint32(26).string(message.amt);
+      writer.uint32(34).string(message.amt);
     }
     return writer;
   },
@@ -1169,6 +1178,9 @@ export const MsgTranfserPoolcoin = {
           message.addr = reader.string();
           break;
         case 3:
+          message.pool = reader.string();
+          break;
+        case 4:
           message.amt = reader.string();
           break;
         default:
@@ -1191,6 +1203,11 @@ export const MsgTranfserPoolcoin = {
     } else {
       message.addr = "";
     }
+    if (object.pool !== undefined && object.pool !== null) {
+      message.pool = String(object.pool);
+    } else {
+      message.pool = "";
+    }
     if (object.amt !== undefined && object.amt !== null) {
       message.amt = String(object.amt);
     } else {
@@ -1203,6 +1220,7 @@ export const MsgTranfserPoolcoin = {
     const obj: any = {};
     message.creator !== undefined && (obj.creator = message.creator);
     message.addr !== undefined && (obj.addr = message.addr);
+    message.pool !== undefined && (obj.pool = message.pool);
     message.amt !== undefined && (obj.amt = message.amt);
     return obj;
   },
@@ -1218,6 +1236,11 @@ export const MsgTranfserPoolcoin = {
       message.addr = object.addr;
     } else {
       message.addr = "";
+    }
+    if (object.pool !== undefined && object.pool !== null) {
+      message.pool = object.pool;
+    } else {
+      message.pool = "";
     }
     if (object.amt !== undefined && object.amt !== null) {
       message.amt = object.amt;

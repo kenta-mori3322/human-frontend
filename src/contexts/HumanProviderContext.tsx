@@ -116,7 +116,7 @@ export const HumanchainProvider = ({
         }
       }
 
-      const chainId = "test"
+      const chainId = "testhuman"
       // Unlock the wallet.
       await window.keplr.enable(chainId);
 
