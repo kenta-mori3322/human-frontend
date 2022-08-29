@@ -24,7 +24,7 @@ export default function useTransactionValidator() {
           const item = {
             moniker: v.description.moniker,
             operator: v.operator_address,
-            bond: parseFloat(v.tokens) / 1e9 + ' KMA',
+            bond: parseFloat(v.tokens) / 1e6 + ' HEART',
             status: v.status,
             jailed: v.jailed==false ? 'No' : 'Yes',
             commission: parseFloat(v.commission.commission_rates.rate)*100 + ' %',

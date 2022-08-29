@@ -42,13 +42,13 @@ export const HumanchainProvider = ({
           try {
             await window.keplr.experimentalSuggestChain({
               // Chain-id of the Cosmos SDK chain.
-              chainId: "test",
+              chainId: "testhuman",
               // The name of the chain to be displayed to the user.
               chainName: "Humanchain",
               // RPC endpoint of the chain.
-              rpc: "http://localhost:26657",
-              // REST endpoint of the chain.
-              rest: "http://localhost:1317",
+              rpc: "https://devnet-explorer-rpc.humans.zone",
+              // REST endpoint of the chain. // https://devnet-explorer-api.humans.zone/
+              rest: "https://devnet-explorer-api.humans.zone",
               // Staking coin information
               stakeCurrency: {
                 // Coin denomination to be displayed to the user.
