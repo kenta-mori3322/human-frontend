@@ -60,12 +60,12 @@ function Send() {
     await handleTransaction();
 
     // if there occurs an error
-    if (transactionResult.includes("failed to execute")) {
-      setTxRequestError("Targeted pool doens't have enough balance in it.")
+    if (transactionResult.includes("failed") || transactionResult.includes("rejected")) {
+      setTxRequestError(transactionResult)
 
       // Show notification
       enqueueSnackbar(null, {
-        content: <Alert severity="error">Targeted pool doens't have enough balance in it.</Alert>,
+        content: <Alert severity="error">transactionResult</Alert>,
       });
 
       return

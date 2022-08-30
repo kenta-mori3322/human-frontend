@@ -3,12 +3,12 @@ import { useEffect, useMemo, useState } from "react";
 export default function useTransactionValidator() {
   const [txData, setTxData] = useState([]);
 
-  // const Diversifi_Node1 = "18.234.18.234"
-  const Diversifi_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
+  // const Humans_Node1 = "18.234.18.234"
+  const Humans_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
   const fetchTxData = async () => {
     fetch(
       "https://" +
-        Diversifi_Node1 +
+        Humans_Node1 +
         "/cosmos/staking/v1beta1/validators",
       {
         headers: {

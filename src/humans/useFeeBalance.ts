@@ -6,13 +6,13 @@ export default function useFeeBalance() {
 
   let interval: any;
 
-  // const Diversifi_Node1 = "18.234.18.234"
-  const Diversifi_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
+  // const Humans_Node1 = "18.234.18.234"
+  const Humans_Node1 = process.env.REACT_APP_Humans_Node_Provider1_Query;
 
   const fetchFeeBalance = async () => {
     fetch(
       "https://" +
-        Diversifi_Node1 +
+        Humans_Node1 +
         "/humansdotai/humans/humans/fee_balance",
       {
         headers: {
