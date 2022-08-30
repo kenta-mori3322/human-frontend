@@ -1,4 +1,4 @@
-# POC - Kima Protocol UI
+# Humans Bridge UI
 
 ## Prerequisites
 
